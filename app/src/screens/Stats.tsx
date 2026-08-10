@@ -1,9 +1,95 @@
 import { useEffect, useState } from 'react'
 import { Heatmap } from '../components/Heatmap'
-import { Panel, SectionTitle, Stat } from '../ui'
+import { Panel, Progress, SectionTitle, Stat } from '../ui'
+import { studyPlan, TARGET_DAYS, trackBreakdown, type Plan } from '../db/plan'
 import {
   recognitionVsProduction, studyDays, totals, troubleConcepts, type StudyDay,
 } from '../db/client'
+
+function PlanPanel() {
+  const [p, setP] = useState<Plan | null>(null)
+  const [tracks, setTracks] = useState<{ kind: string; cards: number; lessons: number }[]>([])
+
+  useEffect(() => {
+    studyPlan().then(setP)
+    trackBreakdown().then(setTracks)
+  }, [])
+
+  if (!p) return null
+  const pctDone = p.totalCards ? Math.round((p.cardsStarted / p.totalCards) * 100) : 0
+
+  return (
+    <div className="mb-10">
+      <SectionTitle right={
+        <span className="text-ink-3 text-xs font-sans font-semibold">
+          target {p.projectedFinish}
+        </span>
+      }>The plan</SectionTitle>
+
+      <Panel className="p-5">
+        <div className="grid grid-cols-3 gap-4 mb-5">
+          <div>
+            <div className="text-2xl font-bold tabular-nums text-grape">{p.newCardsPerDay}</div>
+            <div className="text-ink-3 text-[0.62rem] uppercase tracking-widest mt-1 font-sans font-bold">
+              new cards / day
+            </div>
+          </div>
+          <div>
+            <div className="text-2xl font-bold tabular-nums text-coral">~{p.steadyStateReviews}</div>
+            <div className="text-ink-3 text-[0.62rem] uppercase tracking-widest mt-1 font-sans font-bold">
+              reviews / day
+            </div>
+          </div>
+          <div>
+            <div className="text-2xl font-bold tabular-nums text-matcha">
+              ~{Math.round(p.dailyTotalMinutes / 6) / 10}h
+            </div>
+            <div className="text-ink-3 text-[0.62rem] uppercase tracking-widest mt-1 font-sans font-bold">
+              per day
+            </div>
+          </div>
+        </div>
+
+        <Progress pct={pctDone} color="grape" height={10} />
+        <div className="flex justify-between text-xs text-ink-3 mt-2 font-sans">
+          <span>{p.cardsStarted.toLocaleString()} of {p.totalCards.toLocaleString()} cards started</span>
+          <span>day {p.daysElapsed} of {TARGET_DAYS}</span>
+        </div>
+
+        <p className="text-sm text-ink-2 mt-4 mb-0">
+          {p.daysElapsed <= 1
+            ? `${p.totalCards.toLocaleString()} cards across ${p.totalLessons} lessons. At
+               ${p.newCardsPerDay} new cards a day this finishes in about eleven months, and the
+               daily load settles around ${p.steadyStateReviews} reviews once the deck matures.`
+            : p.onTrack
+              ? `On track — ${p.cardsStarted} cards started against ${p.expectedCardsByNow} expected by now.`
+              : `Behind by ${p.expectedCardsByNow - p.cardsStarted} cards. Either add a few new cards
+                 a day or push the target date; grinding extra reviews will not close the gap.`}
+        </p>
+      </Panel>
+
+      {tracks.length > 0 && (
+        <div className="grid grid-cols-2 gap-3 mt-3">
+          {tracks.filter((t) => t.cards > 0).map((t) => (
+            <Panel key={t.kind} className="px-4 py-3">
+              <div className="flex justify-between items-baseline">
+                <span className="text-sm font-semibold capitalize">{t.kind}</span>
+                <span className="text-sm tabular-nums text-ink-2 font-sans">{t.cards.toLocaleString()}</span>
+              </div>
+              <div className="text-ink-3 text-xs mt-0.5">{t.lessons} lessons</div>
+            </Panel>
+          ))}
+        </div>
+      )}
+
+      <p className="text-ink-3 text-xs mt-3 leading-relaxed">
+        The pacing constraint is new cards per day, not lesson time. Every new card creates a
+        review obligation that recurs for months — introduce them too fast and the queue buries
+        you around week six, which is how most people quit an SRS.
+      </p>
+    </div>
+  )
+}
 
 export function StatsScreen() {
   const [days, setDays] = useState<StudyDay[]>([])
@@ -25,7 +111,9 @@ export function StatsScreen() {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold tracking-tight mb-8">Progress</h1>
+      <h1 className="text-4xl font-bold tracking-tight mb-8">Progress</h1>
+
+      <PlanPanel />
 
       <div className="grid grid-cols-4 gap-3 mb-10">
         <Stat label="Reviews" value={totalReviews} color="grape" icon="🔁" />
