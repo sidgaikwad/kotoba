@@ -28,6 +28,10 @@ type Extra = {
   distractors?: string[]
   dial1?: string
   dial2?: string
+  /* kana */
+  script?: 'hiragana' | 'katakana'
+  hook?: string
+  yoon?: boolean
 }
 
 const parse = (raw: string | null): Extra => {
@@ -48,6 +52,52 @@ export function renderCard(card: Card, revealed: boolean): ReactNode {
   const x = parse(card.extra)
 
   switch (card.type) {
+    /* ---- beginner: the writing system ---- */
+
+    /* Character → sound. The first thing anyone learns. */
+    case 'kana-recognition':
+      return (
+        <Frame
+          hint="What sound is this?"
+          question={<div className="kana-hero text-center">{card.prompt}</div>}
+          answer={revealed && (
+            <div className="text-center">
+              <div className="text-4xl font-bold text-matcha">{card.answer}</div>
+              {x.hook && <p className="text-sm text-ink-2 mt-3 max-w-sm mx-auto">{x.hook}</p>}
+              {x.from && (
+                <p className="text-xs text-ink-3 mt-2">
+                  Built from <span className="ja text-base">{x.from}</span> — the two strokes voice it.
+                </p>
+              )}
+            </div>
+          )}
+        />
+      )
+
+    /* Sound → character. Harder, and the direction that actually matters
+       for writing. Tracked separately so the app cannot mistake one for
+       the other. */
+    case 'kana-production':
+      return (
+        <Frame
+          hint="Which character makes this sound?"
+          question={
+            <div className="text-center">
+              <div className="text-5xl font-bold tracking-tight">{card.prompt}</div>
+              <div className="text-ink-3 text-sm mt-2 font-sans">
+                {x.script === 'katakana' ? 'katakana' : 'hiragana'}
+              </div>
+            </div>
+          }
+          answer={revealed && (
+            <div className="text-center">
+              <div className="kana-hero text-matcha">{card.answer}</div>
+              {x.hook && <p className="text-sm text-ink-2 mt-3 max-w-sm mx-auto">{x.hook}</p>}
+            </div>
+          )}
+        />
+      )
+
     /* Transform one rung of the register ladder into another.
        The card type that carries this whole course. */
     case 'register-transform': {
@@ -68,7 +118,7 @@ export function renderCard(card: Card, revealed: boolean): ReactNode {
           }
           answer={revealed && (
             <div>
-              <div className="ja text-3xl text-accent leading-tight">{card.answer}</div>
+              <div className="ja text-3xl text-grape leading-tight">{card.answer}</div>
               {x.dial && (
                 <p className="text-sm text-ink-2 mt-3">
                   Dial {x.dial} only. The addressee dial is untouched — this same form takes
@@ -145,7 +195,7 @@ export function renderCard(card: Card, revealed: boolean): ReactNode {
       return (
         <Frame
           question={<div className="text-lg">{card.prompt}</div>}
-          answer={revealed && <div className="ja text-2xl text-accent">{card.answer}</div>}
+          answer={revealed && <div className="ja text-2xl text-grape">{card.answer}</div>}
         />
       )
   }
@@ -156,10 +206,14 @@ function Frame({ hint, question, answer }: {
 }) {
   return (
     <div>
-      {hint && <div className="text-ink-3 text-sm italic mb-3">{hint}</div>}
-      <div className="border border-rule rounded-lg bg-paper-2 px-6 py-8">{question}</div>
+      {hint && (
+        <div className="text-ink-3 text-sm text-center mb-3 font-sans">{hint}</div>
+      )}
+      <div className="bg-surface rounded-2xl shadow-[var(--shadow-card)] px-6 py-10">{question}</div>
       {answer && (
-        <div className="border border-accent/40 rounded-lg bg-paper-2 px-6 py-6 mt-3">{answer}</div>
+        <div className="bg-matcha/8 border-2 border-matcha/30 rounded-2xl px-6 py-6 mt-3 anim-rise">
+          {answer}
+        </div>
       )}
     </div>
   )
@@ -167,8 +221,8 @@ function Frame({ hint, question, answer }: {
 
 function Dial({ n, label, value }: { n: number; label: string; value?: string }) {
   return (
-    <div className="border border-rule rounded-md px-3 py-2 bg-paper">
-      <div className="text-[0.6rem] uppercase tracking-widest text-ink-3 font-sans">
+    <div className="rounded-xl px-3 py-2 bg-surface border border-rule">
+      <div className="text-[0.6rem] uppercase tracking-widest text-ink-3 font-sans font-bold">
         Dial {n} · {label}
       </div>
       <div className="ja text-sm mt-1">{value ?? '—'}</div>
