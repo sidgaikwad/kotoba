@@ -1,37 +1,70 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Palette.
+
+   The first version was muted browns on cream — it read as a
+   reference book, which is wrong for something you open tired,
+   every day, to do something difficult.
+
+   This one keeps Japanese text legible (high contrast, generous
+   leading) but puts real colour around it. Hues are borrowed from
+   traditional Japanese dye names, which happen to be a genuinely
+   friendly palette: 藤 wisteria, 珊瑚 coral, 抹茶 matcha,
+   山吹 golden-yellow, 空 sky, 桜 cherry.
+   ============================================================ */
+
 @theme {
-  /* Calm, warm, low-contrast. This is opened every day, often tired. */
-  --color-paper: #fbf9f5;
-  --color-paper-2: #f3efe7;
-  --color-rule: #e2dbcd;
-  --color-ink: #1a1815;
-  --color-ink-2: #55504a;
-  --color-ink-3: #8a837a;
-  --color-accent: #7c4a2d;
-  --color-good: #2f6b46;
-  --color-bad: #99331f;
-  --color-flag: #b8860b;
+  --color-bg:      #FFF8EF;   /* warm cream, not white */
+  --color-surface: #FFFFFF;
+  --color-sunk:    #FDF1E3;
+  --color-rule:    #EFE0CC;
+
+  --color-ink:   #2A2233;
+  --color-ink-2: #6B6076;
+  --color-ink-3: #9C93A6;
+
+  --color-grape:  #6C5CE7;   /* 藤 — primary */
+  --color-grape-2:#8B7BFF;
+  --color-coral:  #FF6B4A;   /* 珊瑚 */
+  --color-matcha: #2FBF71;   /* 抹茶 — correct/success */
+  --color-gold:   #FFB627;   /* 山吹 */
+  --color-sky:    #3FB8D4;   /* 空 */
+  --color-sakura: #FF8FB1;   /* 桜 */
+  --color-berry:  #E5484D;   /* wrong/danger */
 
   --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  /* Japanese first, so JA glyphs never fall back to a font built for
+  /* Japanese first, so JA glyphs never fall back to a font drawn for
      Chinese — that renders 直 骨 画 with visibly wrong shapes. */
   --font-ja: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic Medium",
              "Noto Sans JP", Meiryo, sans-serif;
+
+  --shadow-card: 0 1px 2px rgb(42 34 51 / 0.04), 0 4px 16px rgb(42 34 51 / 0.06);
+  --shadow-pop:  0 2px 4px rgb(42 34 51 / 0.06), 0 12px 32px rgb(108 92 231 / 0.16);
 }
 
 @media (prefers-color-scheme: dark) {
   @theme {
-    --color-paper: #16150f;
-    --color-paper-2: #201e17;
-    --color-rule: #35322a;
-    --color-ink: #e8e3da;
-    --color-ink-2: #b0a99e;
-    --color-ink-3: #7d766c;
-    --color-accent: #d99a6c;
-    --color-good: #7cc39a;
-    --color-bad: #e2856d;
-    --color-flag: #e0b64e;
+    --color-bg:      #15121D;
+    --color-surface: #1E1A2A;
+    --color-sunk:    #241F33;
+    --color-rule:    #342C48;
+
+    --color-ink:   #F0EBF7;
+    --color-ink-2: #B4AAC4;
+    --color-ink-3: #7D7391;
+
+    --color-grape:  #9B8CFF;
+    --color-grape-2:#B5A9FF;
+    --color-coral:  #FF8367;
+    --color-matcha: #4FD98D;
+    --color-gold:   #FFC44D;
+    --color-sky:    #5FCFE8;
+    --color-sakura: #FFA5C1;
+    --color-berry:  #FF6369;
+
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 4px 16px rgb(0 0 0 / 0.24);
+    --shadow-pop:  0 2px 4px rgb(0 0 0 / 0.3), 0 12px 32px rgb(155 140 255 / 0.2);
   }
 }
 
@@ -39,19 +72,46 @@ html, body, #root { height: 100%; }
 
 body {
   margin: 0;
-  background: var(--color-paper);
+  background: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-serif);
   -webkit-font-smoothing: antialiased;
-  /* The window is draggable everywhere except interactive elements. */
   user-select: none;
 }
 
 /* Mixed JA/EN needs more leading than English alone. */
 .ja {
   font-family: var(--font-ja);
-  line-height: 2;
+  line-height: 1.9;
   font-feature-settings: "palt" 1;
 }
 
+/* A single large character — the core of every kana lesson. Sized so the
+   stroke directions that distinguish シ from ツ are actually visible. */
+.kana-hero {
+  font-family: var(--font-ja);
+  font-size: clamp(4rem, 14vw, 7rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
 button, a, input, textarea { user-select: auto; }
+input, textarea { font-family: var(--font-serif); }
+
+/* Gentle feedback animations — enough to feel alive, not enough to annoy
+   on the two-hundredth review of the day. */
+@keyframes pop { 0% { transform: scale(.94) } 60% { transform: scale(1.03) } 100% { transform: scale(1) } }
+@keyframes shake { 0%,100% { transform: translateX(0) } 25% { transform: translateX(-5px) } 75% { transform: translateX(5px) } }
+@keyframes risein { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+
+.anim-pop   { animation: pop .28s ease-out }
+.anim-shake { animation: shake .3s ease-in-out }
+.anim-rise  { animation: risein .3s ease-out both }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-pop, .anim-shake, .anim-rise { animation: none }
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px }
+::-webkit-scrollbar-thumb { background: var(--color-rule); border-radius: 6px }
+::-webkit-scrollbar-track { background: transparent }
