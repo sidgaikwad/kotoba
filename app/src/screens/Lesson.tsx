@@ -59,7 +59,7 @@ export function LessonScreen({ slug, go }: { slug: string; go: (to: string) => v
         </div>
         <h1 className="text-3xl font-semibold tracking-tight m-0">{lesson.title}</h1>
         <div className="h-1 bg-rule rounded mt-4 overflow-hidden">
-          <div className="h-full bg-accent transition-all duration-300" style={{ width: `${pct}%` }} />
+          <div className="h-full bg-grape transition-all duration-300" style={{ width: `${pct}%` }} />
         </div>
       </div>
 
@@ -77,7 +77,7 @@ export function LessonScreen({ slug, go }: { slug: string; go: (to: string) => v
             Its cards are now unlocked and will start appearing in your reviews. Reading it once
             is not remembering it — the review queue is where it actually sticks.
           </p>
-          <Button onClick={() => go('review')}>Review now</Button>
+          <Button onClick={() => go('remember')}>Review now</Button>
           <Button variant="quiet" className="ml-2" onClick={() => go('learn')}>Later</Button>
         </Panel>
       )}
@@ -92,11 +92,11 @@ export function LessonScreen({ slug, go }: { slug: string; go: (to: string) => v
         )}
         <div className="space-y-2">
           {notes.map((n) => (
-            <div key={n.id} className="border-l-3 border-flag bg-paper-2 rounded-r px-4 py-3 group">
+            <div key={n.id} className="border-l-3 border-gold bg-sunk rounded-r px-4 py-3 group">
               <div className="text-sm whitespace-pre-wrap">{n.body}</div>
               <div className="flex gap-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
-                  className="text-xs font-sans text-ink-3 hover:text-bad cursor-pointer"
+                  className="text-xs font-sans text-ink-3 hover:text-berry cursor-pointer"
                   onClick={async () => { await deleteNote(n.id); setNotes(await notesFor(lesson.id)) }}
                 >delete</button>
               </div>
@@ -108,7 +108,7 @@ export function LessonScreen({ slug, go }: { slug: string; go: (to: string) => v
           onChange={(e) => setDraft(e.target.value)}
           placeholder="Something you want to remember when you come back to this…"
           rows={3}
-          className="w-full mt-3 bg-paper border border-rule rounded-md px-3 py-2 text-sm font-serif resize-y focus:outline-none focus:border-accent"
+          className="w-full mt-3 bg-surface border border-rule rounded-md px-3 py-2 text-sm font-serif resize-y focus:outline-none focus:border-grape"
         />
         <Button variant="ghost" onClick={saveNote} className="mt-2">Add note</Button>
       </div>
@@ -164,9 +164,9 @@ function BlockView({ block }: { block: { kind: string; content: Record<string, u
 
     case 'callout': {
       const k = c as { tone?: 'note' | 'warn'; html: string }
-      const border = k.tone === 'warn' ? 'border-flag' : 'border-accent'
+      const border = k.tone === 'warn' ? 'border-gold' : 'border-grape'
       return (
-        <div className={`border-l-3 ${border} bg-paper-2 rounded-r px-4 py-3 my-5 text-[0.95rem]`}
+        <div className={`border-l-3 ${border} bg-sunk rounded-r px-4 py-3 my-5 text-[0.95rem]`}
              dangerouslySetInnerHTML={{ __html: k.html }} />
       )
     }
@@ -180,12 +180,12 @@ function BlockView({ block }: { block: { kind: string; content: Record<string, u
     case 'source': {
       const s = c as { tier: string; title: string; url: string; html: string }
       return (
-        <div className="border-l-3 border-ink-3 bg-paper-2 rounded-r px-4 py-3 my-6 text-sm font-sans">
+        <div className="border-l-3 border-ink-3 bg-sunk rounded-r px-4 py-3 my-6 text-sm font-sans">
           <div className="mb-1">
-            <span className="text-[0.6rem] font-bold tracking-wider bg-good text-paper px-1.5 py-0.5 rounded">
+            <span className="text-[0.6rem] font-bold tracking-wider bg-matcha text-white px-1.5 py-0.5 rounded">
               {s.tier}
             </span>{' '}
-            <a href={s.url} target="_blank" rel="noreferrer" className="text-accent font-semibold">{s.title}</a>
+            <a href={s.url} target="_blank" rel="noreferrer" className="text-grape font-semibold">{s.title}</a>
           </div>
           <div className="text-ink-2 font-serif" dangerouslySetInnerHTML={{ __html: s.html }} />
         </div>
@@ -213,8 +213,8 @@ function Prose({ html }: { html: string }) {
 function Predict({ content }: { content: { html: string; reveal: string } }) {
   const [shown, setShown] = useState(false)
   return (
-    <div className="border border-accent/40 rounded-lg bg-paper-2 px-5 py-4 my-6">
-      <div className="text-[0.65rem] uppercase tracking-widest text-accent font-sans font-bold mb-2">
+    <div className="border border-grape/40 rounded-lg bg-sunk px-5 py-4 my-6">
+      <div className="text-[0.65rem] uppercase tracking-widest text-grape font-sans font-bold mb-2">
         Commit to an answer first
       </div>
       <div dangerouslySetInnerHTML={{ __html: content.html }} />
@@ -238,7 +238,7 @@ type PracticeContent = {
 function Practice({ content }: { content: PracticeContent }) {
   const [picked, setPicked] = useState<number | null>(null)
   return (
-    <div className="border border-rule rounded-lg bg-paper-2 px-5 py-4 my-6">
+    <div className="border border-rule rounded-lg bg-sunk px-5 py-4 my-6">
       <div className="text-[0.65rem] uppercase tracking-widest text-ink-3 font-sans font-bold mb-2">
         Try it
       </div>
@@ -246,14 +246,14 @@ function Practice({ content }: { content: PracticeContent }) {
       <div className="space-y-2">
         {content.options.map((o, i) => {
           const state = picked === null ? ''
-            : o.ok ? 'border-good bg-good/10'
-            : picked === i ? 'border-bad bg-bad/10' : 'opacity-50'
+            : o.ok ? 'border-matcha bg-matcha/10'
+            : picked === i ? 'border-berry bg-berry/10' : 'opacity-50'
           return (
             <button
               key={i}
               disabled={picked !== null}
               onClick={() => setPicked(i)}
-              className={`block w-full text-left px-3 py-2 rounded border border-rule bg-paper text-[0.95rem] transition-colors ${state} ${picked === null ? 'cursor-pointer hover:border-accent' : 'cursor-default'}`}
+              className={`block w-full text-left px-3 py-2 rounded border border-rule bg-surface text-[0.95rem] transition-colors ${state} ${picked === null ? 'cursor-pointer hover:border-grape' : 'cursor-default'}`}
               dangerouslySetInnerHTML={{ __html: o.html }}
             />
           )

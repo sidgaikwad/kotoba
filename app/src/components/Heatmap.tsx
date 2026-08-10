@@ -53,7 +53,7 @@ export function Heatmap({ days }: { days: StudyDay[] }) {
                 ? 'transparent'
                 : intensity(d?.reviews ?? 0, peak),
               outline: d?.counted_for_streak
-                ? '1px solid color-mix(in srgb, var(--color-accent) 55%, transparent)'
+                ? '1px solid color-mix(in srgb, var(--color-grape) 55%, transparent)'
                 : 'none',
               outlineOffset: -1,
             }}
@@ -69,5 +69,5 @@ function intensity(reviews: number, peak: number): string {
   // Four steps, on a sqrt curve so one good day doesn't flatten everything else.
   const step = Math.min(4, Math.ceil((Math.sqrt(reviews) / Math.sqrt(peak)) * 4))
   const pct = [0, 28, 48, 70, 100][step]
-  return `color-mix(in srgb, var(--color-accent) ${pct}%, var(--color-rule))`
+  return `color-mix(in srgb, var(--color-grape) ${pct}%, var(--color-rule))`
 }

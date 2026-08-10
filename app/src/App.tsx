@@ -28,7 +28,7 @@ export default function App() {
   return (
     <Shell active={active} go={go} due={due} streak={streak}>
       {error && (
-        <div className="border-l-3 border-bad bg-paper-2 px-4 py-3 mb-6 text-sm rounded-r">
+        <div className="border-l-3 border-berry bg-sunk px-4 py-3 mb-6 text-sm rounded-r">
           <strong>Database error.</strong> {error}
           <div className="text-ink-3 text-xs mt-1">
             Expected when this build is opened outside the desktop shell — there is no Tauri IPC in a
@@ -40,7 +40,7 @@ export default function App() {
       {!head && <HomeScreen go={go} />}
       {head === 'learn' && <LearnScreen go={go} />}
       {head === 'lesson' && arg && <LessonScreen slug={arg} go={go} />}
-      {head === 'review' && <ReviewScreen go={go} />}
+      {head === 'remember' && <ReviewScreen go={go} />}
       {head === 'notes' && <NotesScreen />}
       {head === 'stats' && <StatsScreen />}
     </Shell>

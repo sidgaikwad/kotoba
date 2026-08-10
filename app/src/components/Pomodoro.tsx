@@ -37,12 +37,12 @@ export function Pomodoro() {
   return (
     <div className="flex items-center gap-2">
       {onBreak && running && (
-        <span className="text-[0.6rem] uppercase tracking-widest text-good font-sans font-bold">break</span>
+        <span className="text-[0.6rem] uppercase tracking-widest text-matcha font-sans font-bold">break</span>
       )}
       <button
         onClick={() => setRunning((r) => !r)}
         className={`font-mono text-sm tabular-nums px-2.5 py-1 rounded border cursor-pointer transition-colors
-          ${running ? 'border-accent text-accent' : 'border-rule text-ink-3 hover:text-ink'}`}
+          ${running ? 'border-grape text-grape' : 'border-rule text-ink-3 hover:text-ink'}`}
         title={running ? 'Pause focus timer' : 'Start focus timer'}
       >
         {mm}:{ss}

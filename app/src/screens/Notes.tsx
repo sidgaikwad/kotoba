@@ -40,7 +40,7 @@ export function NotesScreen() {
       <div className="flex gap-2 mb-6">
         <input
           value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search all notes…"
-          className="flex-1 bg-paper border border-rule rounded-md px-3 py-2 text-sm font-serif focus:outline-none focus:border-accent"
+          className="flex-1 bg-surface border border-rule rounded-md px-3 py-2 text-sm font-serif focus:outline-none focus:border-grape"
         />
         <Button variant="ghost" onClick={exportAll}>Export</Button>
       </div>
@@ -49,7 +49,7 @@ export function NotesScreen() {
         <textarea
           rows={3} value={draft} onChange={(e) => setDraft(e.target.value)}
           placeholder="New note…"
-          className="w-full bg-paper border border-rule rounded-md px-3 py-2 text-sm font-serif resize-y focus:outline-none focus:border-accent"
+          className="w-full bg-surface border border-rule rounded-md px-3 py-2 text-sm font-serif resize-y focus:outline-none focus:border-grape"
         />
         <Button
           className="mt-2"
@@ -75,7 +75,7 @@ export function NotesScreen() {
         {notes.map((n) => (
           <div
             key={n.id}
-            className={`border-l-3 rounded-r bg-paper-2 px-4 py-3 group ${n.pinned ? 'border-accent' : 'border-rule'}`}
+            className={`border-l-3 rounded-r bg-sunk px-4 py-3 group ${n.pinned ? 'border-grape' : 'border-rule'}`}
           >
             <div className="flex items-center gap-2 mb-1.5">
               <span className="text-[0.6rem] uppercase tracking-widest font-sans text-ink-3">
@@ -91,7 +91,7 @@ export function NotesScreen() {
               <>
                 <textarea
                   rows={3} value={editBody} onChange={(e) => setEditBody(e.target.value)}
-                  className="w-full bg-paper border border-rule rounded-md px-3 py-2 text-sm font-serif resize-y focus:outline-none focus:border-accent"
+                  className="w-full bg-surface border border-rule rounded-md px-3 py-2 text-sm font-serif resize-y focus:outline-none focus:border-grape"
                 />
                 <div className="flex gap-2 mt-2">
                   <Button variant="ghost" onClick={async () => {
@@ -106,11 +106,11 @@ export function NotesScreen() {
                 <div className="flex gap-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity text-xs font-sans">
                   <button className="text-ink-3 hover:text-ink cursor-pointer"
                     onClick={() => { setEditing(n.id); setEditBody(n.body) }}>edit</button>
-                  <button className="text-ink-3 hover:text-accent cursor-pointer"
+                  <button className="text-ink-3 hover:text-grape cursor-pointer"
                     onClick={async () => { await togglePin(n.id); await refresh() }}>
                     {n.pinned ? 'unpin' : 'pin'}
                   </button>
-                  <button className="text-ink-3 hover:text-bad cursor-pointer"
+                  <button className="text-ink-3 hover:text-berry cursor-pointer"
                     onClick={async () => { await deleteNote(n.id); await refresh() }}>delete</button>
                 </div>
               </>

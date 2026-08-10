@@ -112,12 +112,12 @@ export function ReviewScreen({ go }: { go: (to: string) => void }) {
             <div className="text-ink-3 text-[0.68rem] uppercase tracking-widest mt-2">reviewed</div></Panel>
           <Panel className="px-4 py-4"><div className="text-2xl font-semibold tabular-nums">{acc}%</div>
             <div className="text-ink-3 text-[0.68rem] uppercase tracking-widest mt-2">recalled</div></Panel>
-          <Panel className="px-4 py-4"><div className="text-2xl font-semibold tabular-nums text-bad">{tally.again}</div>
+          <Panel className="px-4 py-4"><div className="text-2xl font-semibold tabular-nums text-berry">{tally.again}</div>
             <div className="text-ink-3 text-[0.68rem] uppercase tracking-widest mt-2">missed</div></Panel>
         </div>
 
         {acc >= 95 && total >= 5 && (
-          <div className="border-l-3 border-flag bg-paper-2 rounded-r px-4 py-3 mb-6 text-sm">
+          <div className="border-l-3 border-gold bg-sunk rounded-r px-4 py-3 mb-6 text-sm">
             <strong>That was too easy.</strong> Near-perfect recall means the intervals are shorter
             than they need to be — you're spending effort on things you already know. If this keeps
             up, the material needs to get harder, not more frequent.
@@ -131,7 +131,7 @@ export function ReviewScreen({ go }: { go: (to: string) => void }) {
           <textarea
             rows={3} value={noteDraft} onChange={(e) => { setNoteDraft(e.target.value); setNoteSaved(false) }}
             placeholder="What tripped you up? Write it while it's fresh."
-            className="w-full bg-paper border border-rule rounded-md px-3 py-2 text-sm font-serif resize-y focus:outline-none focus:border-accent"
+            className="w-full bg-surface border border-rule rounded-md px-3 py-2 text-sm font-serif resize-y focus:outline-none focus:border-grape"
           />
           <Button
             variant="ghost" className="mt-2"
@@ -163,11 +163,11 @@ export function ReviewScreen({ go }: { go: (to: string) => void }) {
       </div>
 
       <div className="h-1 bg-rule rounded mb-8 overflow-hidden">
-        <div className="h-full bg-accent transition-all" style={{ width: `${(i / queue.length) * 100}%` }} />
+        <div className="h-full bg-grape transition-all" style={{ width: `${(i / queue.length) * 100}%` }} />
       </div>
 
       {fatigue.tired && (
-        <div className="border-l-3 border-flag bg-paper-2 rounded-r px-4 py-3 mb-6 text-sm">
+        <div className="border-l-3 border-gold bg-sunk rounded-r px-4 py-3 mb-6 text-sm">
           <strong>Your accuracy is dropping.</strong> The last several have gone worse than the ones
           before. Reviewing while fatigued teaches you the wrong thing — take five minutes.
         </div>
@@ -190,11 +190,11 @@ export function ReviewScreen({ go }: { go: (to: string) => void }) {
               <button
                 key={r.grade}
                 onClick={() => void rate(r.grade)}
-                className="border border-rule rounded-md px-2 py-3 bg-paper hover:border-accent cursor-pointer transition-colors text-center"
+                className="border border-rule rounded-md px-2 py-3 bg-surface hover:border-grape cursor-pointer transition-colors text-center"
               >
                 <div className="font-sans text-sm font-semibold">{r.label}</div>
                 <div className="text-ink-3 text-[0.68rem] mt-0.5">{r.hint}</div>
-                <div className="text-accent text-xs tabular-nums mt-1.5 font-sans">{previews[r.grade]}</div>
+                <div className="text-grape text-xs tabular-nums mt-1.5 font-sans">{previews[r.grade]}</div>
               </button>
             ))}
           </div>

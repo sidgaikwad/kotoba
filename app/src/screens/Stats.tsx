@@ -28,10 +28,10 @@ export function StatsScreen() {
       <h1 className="text-3xl font-semibold tracking-tight mb-8">Progress</h1>
 
       <div className="grid grid-cols-4 gap-3 mb-10">
-        <Stat label="Reviews" value={totalReviews} />
-        <Stat label="Hours" value={hours} />
-        <Stat label="Mature" value={t?.mature ?? 0} sub="stable 3+ weeks" />
-        <Stat label="XP" value={t?.xp ?? 0} />
+        <Stat label="Reviews" value={totalReviews} color="grape" icon="🔁" />
+        <Stat label="Hours" value={hours} color="sky" icon="⏱" />
+        <Stat label="Mature" value={t?.mature ?? 0} color="matcha" icon="🌳" />
+        <Stat label="XP" value={t?.xp ?? 0} color="gold" icon="⚡" />
       </div>
 
       <div className="mb-10">
@@ -70,7 +70,7 @@ export function StatsScreen() {
             {trouble.map((c) => (
               <div key={c.slug} className="flex justify-between py-1.5 border-b border-rule last:border-0">
                 <span className="text-sm">{c.title}</span>
-                <span className="text-sm tabular-nums text-bad font-sans">{c.lapses} lapses</span>
+                <span className="text-sm tabular-nums text-berry font-sans">{c.lapses} lapses</span>
               </div>
             ))}
             <p className="text-xs text-ink-3 mt-3 mb-0">
@@ -92,7 +92,7 @@ function Bar({ label, pct, count }: { label: string; pct: number; count: number 
         <span className="text-lg font-semibold tabular-nums">{pct}%</span>
       </div>
       <div className="h-2 bg-rule rounded overflow-hidden">
-        <div className="h-full bg-accent transition-all" style={{ width: `${pct}%` }} />
+        <div className="h-full bg-grape transition-all" style={{ width: `${pct}%` }} />
       </div>
       <div className="text-ink-3 text-xs mt-1">{count} cards</div>
     </div>
