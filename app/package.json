@@ -12,7 +12,8 @@
     "desktop": "tauri dev",
     "dmg": "tauri build --bundles dmg",
     "db:generate": "drizzle-kit generate",
-    "seed": "bun run scripts/seed.ts"
+    "seed": "bun run scripts/seed.ts",
+    "smoke": "bun run scripts/smoke.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
