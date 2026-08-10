@@ -17,15 +17,36 @@ You come across slightly wrong, every day, for years.
 
 Most language apps optimise the loud half. This one is built for the silent half.
 
+## Where it starts
+
+**At zero.** Lesson one teaches あ. You are not assumed to read a single character.
+
+The course opens with a full kana track — 22 bite-size units covering all 46 hiragana and katakana,
+plus dakuten, yōon and small っ — before a word of the professional material appears. Five
+characters per lesson, each taught then immediately recalled, then produced, then interleaved with
+earlier ones.
+
+Only once you can read does the register work begin. The prerequisite graph enforces this: the
+politeness lessons are literally locked behind finishing hiragana.
+
+```
+KANA  ·  Hiragana 1–10  →  Dakuten  →  Katakana 1–10  →  Small kana
+N5    ·  The cost of the wrong register  →  Two dials, not one
+N4–N1 ·  (in progress)
+```
+
 ## What it does
 
 - **Lessons that teach**, not quizzes with prose attached. Content is stored as ordered blocks —
   `prose`, `example`, `table`, `callout`, `predict`, `practice`, `source` — revealed progressively,
   so a `predict` block can force a commitment before the explanation is visible.
+- **Learn and Remember are separate.** Learn is the syllabus path. Remember is the SRS deck. Reading
+  something and being able to recall it are different states and the app never conflates them.
 - **FSRS scheduling** (not SM-2), so the app can target a retention rate and improve as the review
   log grows.
-- **Register-aware card types**: `register-transform`, `register-choice`, `error-detection`,
-  `register-analysis` — alongside ordinary recognition and production cards.
+- **Card types that fit the material**: `kana-recognition`, `kana-production`,
+  `register-transform`, `register-choice`, `error-detection`, `register-analysis`. All added
+  without touching the language-agnostic core.
 - **Review integrity**: a card can never appear before the lesson that teaches it has been read.
 - **Recognition vs production tracked separately**, because recognition always runs ahead and
   conflating them lets an app report fluency the learner does not have.
