@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A newer push makes an in-flight run irrelevant.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: app
+
+jobs:
+  check:
+    name: typecheck · lint · build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+      - name: Typecheck and build
+        run: bun run build
+      - name: Lint
+        run: bun run lint
+
+  smoke:
+    name: learning loop
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+
+      # Builds its own database from the generated migrations and seeds the
+      # real course into it, so this runs anywhere — no app launch required.
+      - name: Smoke test the learning loop
+        run: bun run smoke
+
+  migrations:
+    name: schema is in sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+
+      # Drizzle is the source of truth and Rust embeds the generated SQL.
+      # If someone edits the schema without regenerating, they drift apart
+      # silently — and the app ships a database that does not match its types.
+      - name: Fail if migrations are not regenerated
+        run: |
+          bunx drizzle-kit generate --name ci_check
+          if [ -n "$(git status --porcelain drizzle)" ]; then
+            echo "::error::Schema changed but migrations were not regenerated."
+            echo "Run 'bun run db:generate' and commit the result."
+            git status --porcelain drizzle
+            exit 1
+          fi
+          echo "migrations are in sync"
