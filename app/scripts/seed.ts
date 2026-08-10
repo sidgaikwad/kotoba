@@ -18,6 +18,11 @@ import { join } from 'node:path'
 import { LESSONS as REGISTER_LESSONS } from './content'
 import { buildKanaTrack, KANA_CONCEPTS, kanaCards } from './kana-course'
 import { CONFUSABLE } from './kana'
+import {
+  ALL_GRAMMAR, buildGrammarTrack, GRAMMAR_CONCEPTS, grammarCards, grammarInterference,
+} from './grammar'
+import { buildKanjiTrack, kanjiCards, kanjiConcepts, levelForIndex } from './kanji-course'
+import { buildVocabTrack, levelForVocabIndex, vocabCards, vocabConcepts } from './vocab-course'
 
 /** KOTOBA_DB lets CI and the smoke test seed a throwaway database. */
 const DB_PATH = process.env.KOTOBA_DB
@@ -117,7 +122,15 @@ for (const [code, title, ordinal] of LEVELS) {
 
 const unitId: Record<string, number> = {
   kana: upsert('unit', { level_id: levelId.KANA, title: 'The writing system', ordinal: 1 }, 'title'),
-  register: upsert('unit', { level_id: levelId.N5, title: 'Register foundations', ordinal: 1 }, 'title'),
+  register: upsert('unit', { level_id: levelId.N5, title: 'Register foundations', ordinal: 9 }, 'title'),
+}
+for (const lvl of ['N5', 'N4', 'N3', 'N2', 'N1'] as const) {
+  unitId[`grammar-${lvl}`] = upsert('unit',
+    { level_id: levelId[lvl], title: `${lvl} grammar`, ordinal: 1 }, 'title')
+  unitId[`kanji-${lvl}`] = upsert('unit',
+    { level_id: levelId[lvl], title: `${lvl} kanji`, ordinal: 5 }, 'title')
+  unitId[`vocab-${lvl}`] = upsert('unit',
+    { level_id: levelId[lvl], title: `${lvl} vocabulary`, ordinal: 3 }, 'title')
 }
 
 /* ---------------- concepts ---------------- */
@@ -127,6 +140,9 @@ const concept = (slug: string, title: string, kind: string) =>
 
 const conceptId: Record<string, number> = {}
 for (const c of KANA_CONCEPTS) conceptId[c.slug] = concept(c.slug, c.title, c.kind)
+for (const c of GRAMMAR_CONCEPTS) conceptId[c.slug] = concept(c.slug, c.title, c.kind)
+for (const c of kanjiConcepts()) conceptId[c.slug] = concept(c.slug, c.title, c.kind)
+for (const c of vocabConcepts()) conceptId[c.slug] = concept(c.slug, c.title, c.kind)
 
 const REGISTER_CONCEPTS = [
   ['two-dials', 'The two dials of politeness'],
@@ -159,6 +175,14 @@ const prereqs: [string, string][] = [
   ['kenjougo-verbs', 'two-dials'],
   ['kenjougo-1-vs-2', 'kenjougo-verbs'],
   ['nijuu-keigo', 'sonkeigo-verbs'],
+  // Grammar depends on being able to read. Every N5 point sits behind
+  // finishing hiragana; each higher level sits behind the level below it.
+  ...ALL_GRAMMAR.filter((p) => p.level === 'N5').map((p) => [`g-${p.id}`, lastHiragana] as [string, string]),
+  ...ALL_GRAMMAR.filter((p) => p.level !== 'N5').map((p) => {
+    const below = { N4: 'N5', N3: 'N4', N2: 'N3', N1: 'N2' }[p.level]!
+    const anchor = ALL_GRAMMAR.find((q) => q.level === below)!
+    return [`g-${p.id}`, `g-${anchor.id}`] as [string, string]
+  }),
 ]
 for (const [c, r] of prereqs) {
   if (!conceptId[c] || !conceptId[r]) throw new Error(`bad prereq edge ${c} → ${r}`)
@@ -187,7 +211,10 @@ for (const [a, b, why] of CONFUSABLE) {
 /* ---------------- lessons ---------------- */
 
 const kanaTrack = buildKanaTrack(1)
-const registerTrack = REGISTER_LESSONS.map((l, i) => ({ ...l, ordinal: kanaTrack.length + i + 1 }))
+const registerTrack = REGISTER_LESSONS.map((l, i) => ({ ...l, ordinal: 900 + i }))
+const grammarTrack = buildGrammarTrack(1)
+const kanjiTrack = buildKanjiTrack(1)
+const vocabTrack = buildVocabTrack(1)
 
 function writeLesson(def: (typeof kanaTrack)[number], unit: number) {
   const id = upsert('lesson', {
@@ -221,8 +248,49 @@ function writeLesson(def: (typeof kanaTrack)[number], unit: number) {
 
 for (const l of kanaTrack) writeLesson(l, unitId.kana)
 for (const l of registerTrack) writeLesson(l, unitId.register)
+for (const l of grammarTrack) {
+  const lvl = l.slug.slice(0, 2).toUpperCase()
+  writeLesson(l, unitId[`grammar-${lvl}`] ?? unitId['grammar-N5'])
+}
+// Kanji lessons are spread across levels by frequency rank, so the level a
+// character lands in reflects when you will actually meet it in text.
+kanjiTrack.forEach((l, i) => {
+  const lvl = levelForIndex(i * 10)
+  writeLesson(l, unitId[`kanji-${lvl}`])
+})
+vocabTrack.forEach((l, i) => {
+  const lvl = levelForVocabIndex(i * 12)
+  writeLesson(l, unitId[`vocab-${lvl}`])
+})
 
 /* ---------------- cards ---------------- */
+
+for (const v of vocabCards()) {
+  card(conceptId[v.concept], {
+    key: v.key, type: v.type, prompt: v.prompt, answer: v.answer,
+    direction: v.direction, extra: v.extra,
+  })
+}
+
+for (const k of kanjiCards()) {
+  card(conceptId[k.concept], {
+    key: k.key, type: k.type, prompt: k.prompt, answer: k.answer,
+    direction: k.direction, extra: k.extra,
+  })
+}
+
+for (const g of grammarCards()) {
+  card(conceptId[g.concept], {
+    key: g.key, type: g.type, prompt: g.prompt, answer: g.answer,
+    direction: g.direction, extra: g.extra,
+  })
+}
+
+for (const [a, b, why] of grammarInterference()) {
+  if (!conceptId[a] || !conceptId[b]) continue
+  db.query('INSERT OR IGNORE INTO concept_interference (concept_id, collides_with_id, reason) VALUES (?,?,?)')
+    .run(conceptId[a], conceptId[b], why)
+}
 
 for (const c of kanaCards()) {
   // The character itself is the stable key: it never changes, and unlike the
@@ -370,6 +438,9 @@ console.table({
   concepts: n('SELECT COUNT(*) n FROM concept'),
   cards: n('SELECT COUNT(*) n FROM card'),
   kana_cards: n("SELECT COUNT(*) n FROM card WHERE type LIKE 'kana-%'"),
+  kanji_cards: n("SELECT COUNT(*) n FROM card WHERE type LIKE 'kanji-%'"),
+  grammar_cards: n("SELECT COUNT(*) n FROM card WHERE type LIKE 'grammar-%'"),
+  vocab_cards: n("SELECT COUNT(*) n FROM card WHERE type LIKE 'vocab-%'"),
   register_cards: n("SELECT COUNT(*) n FROM card WHERE type LIKE 'register-%' OR type='error-detection'"),
 })
 db.close()
