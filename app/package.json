@@ -15,7 +15,8 @@
     "seed": "bun run scripts/seed.ts",
     "smoke": "bun run scripts/smoke.ts",
     "fetch-kanji": "bun run scripts/fetch-kanji.ts",
-    "fetch-vocab": "bun run scripts/fetch-vocab.ts"
+    "fetch-vocab": "bun run scripts/fetch-vocab.ts",
+    "fetch-radicals": "bun run scripts/fetch-radicals.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
