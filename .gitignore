@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# builds
+dist/
+dist-ssr/
+*.local
+app/src-tauri/target/
+app/src-tauri/gen/
+
+# local databases — learning progress is personal, never committed
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+
+# env
+.env
+.env.*
+!.env.example
+
+# editors / os
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+
+# logs
+*.log
+npm-debug.log*
