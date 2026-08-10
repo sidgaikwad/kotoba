@@ -32,6 +32,20 @@ type Extra = {
   script?: 'hiragana' | 'katakana'
   hook?: string
   yoon?: boolean
+  /* grammar */
+  level?: string
+  formation?: string
+  example?: string
+  pattern?: string
+  romaji?: string
+  register?: string
+  /* kanji + vocab */
+  on?: string[]
+  kun?: string[]
+  strokes?: number
+  freq?: number | null
+  reading?: string
+  pos?: string
 }
 
 const parse = (raw: string | null): Extra => {
@@ -52,6 +66,144 @@ export function renderCard(card: Card, revealed: boolean): ReactNode {
   const x = parse(card.extra)
 
   switch (card.type) {
+    /* ---- kanji ---- */
+
+    case 'kanji-meaning':
+      return (
+        <Frame
+          hint={x.level ? `${x.level} · what does this character mean?` : 'What does this mean?'}
+          question={<div className="kana-hero text-center">{card.prompt}</div>}
+          answer={revealed && (
+            <div className="text-center">
+              <div className="text-2xl font-bold text-matcha">{card.answer}</div>
+              <div className="flex justify-center gap-6 mt-4 text-sm">
+                {!!x.on?.length && (
+                  <div><span className="text-ink-3">音 </span><span className="ja">{x.on.join('・')}</span></div>
+                )}
+                {!!x.kun?.length && (
+                  <div><span className="text-ink-3">訓 </span><span className="ja">{x.kun.join('・')}</span></div>
+                )}
+              </div>
+              {x.strokes ? (
+                <div className="text-ink-3 text-xs mt-2 font-sans">
+                  {x.strokes} strokes{x.freq ? ` · frequency rank ${x.freq}` : ''}
+                </div>
+              ) : null}
+            </div>
+          )}
+        />
+      )
+
+    case 'kanji-reading':
+      return (
+        <Frame
+          hint="How is this character read?"
+          question={<div className="kana-hero text-center">{card.prompt}</div>}
+          answer={revealed && (
+            <div className="text-center">
+              <div className="ja text-3xl text-matcha leading-relaxed">{card.answer}</div>
+              <p className="text-ink-3 text-xs mt-3 font-sans">
+                音 is the Chinese-derived reading, used in compounds. 訓 is the native reading,
+                used when the character stands alone.
+              </p>
+            </div>
+          )}
+        />
+      )
+
+    /* ---- vocabulary ---- */
+
+    case 'vocab-recognition':
+      return (
+        <Frame
+          hint="What does this word mean?"
+          question={
+            <div className="text-center">
+              <div className="ja text-5xl leading-tight">{card.prompt}</div>
+            </div>
+          }
+          answer={revealed && (
+            <div className="text-center">
+              {x.reading && x.reading !== card.prompt && (
+                <div className="ja text-xl text-ink-2 mb-2">{x.reading}</div>
+              )}
+              <div className="text-xl font-semibold text-matcha">{card.answer}</div>
+              {x.pos && x.pos !== 'other' && (
+                <div className="text-ink-3 text-xs mt-2 font-sans uppercase tracking-widest">{x.pos}</div>
+              )}
+            </div>
+          )}
+        />
+      )
+
+    case 'vocab-production':
+      return (
+        <Frame
+          hint="Say this in Japanese"
+          question={<div className="text-2xl text-center leading-relaxed">{card.prompt}</div>}
+          answer={revealed && (
+            <div className="text-center">
+              <div className="ja text-4xl text-matcha leading-tight">{card.answer}</div>
+              {x.reading && x.reading !== card.answer && (
+                <div className="ja text-lg text-ink-2 mt-1">{x.reading}</div>
+              )}
+            </div>
+          )}
+        />
+      )
+
+    /* ---- grammar ---- */
+
+    /* Pattern → what it does. Recognition. */
+    case 'grammar-meaning':
+      return (
+        <Frame
+          hint={x.level ? `${x.level} · what does this pattern do?` : 'What does this pattern do?'}
+          question={<div className="ja text-3xl text-center leading-snug">{card.prompt}</div>}
+          answer={revealed && (
+            <div>
+              <div className="text-xl font-semibold text-matcha mb-2">{card.answer}</div>
+              {x.formation && (
+                <p className="text-sm text-ink-2 m-0 mb-3">
+                  <span className="text-ink-3">Attaches as </span>
+                  <span className="ja">{x.formation}</span>
+                </p>
+              )}
+              {x.example && (
+                <div className="border-l-3 border-grape/40 pl-3 mt-3">
+                  <div className="ja text-lg">{x.example}</div>
+                  {x.gloss && <div className="text-ink-2 text-sm italic">{x.gloss}</div>}
+                </div>
+              )}
+            </div>
+          )}
+        />
+      )
+
+    /* English → Japanese. The direction that actually builds output. */
+    case 'grammar-production':
+      return (
+        <Frame
+          hint={x.pattern ? `Say this using ${x.pattern}` : 'Say this in Japanese'}
+          question={
+            <div className="text-center">
+              <div className="text-xl leading-relaxed">{card.prompt}</div>
+              {x.register && (
+                <div className="text-ink-3 text-xs font-sans mt-3 uppercase tracking-widest">
+                  {x.register} register
+                </div>
+              )}
+            </div>
+          }
+          answer={revealed && (
+            <div className="text-center">
+              <div className="ja text-2xl text-matcha leading-relaxed">{card.answer}</div>
+              {x.romaji && <div className="text-ink-3 text-sm font-sans mt-1">{x.romaji}</div>}
+            </div>
+          )}
+        />
+      )
+
     /* ---- beginner: the writing system ---- */
 
     /* Character → sound. The first thing anyone learns. */
