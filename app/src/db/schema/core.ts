@@ -176,6 +176,16 @@ export const card = sqliteTable('card', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   conceptId: integer('concept_id').notNull().references(() => concept.id),
   type: text('type').notNull(),
+  /**
+   * Stable identity for authored content, independent of the text shown.
+   *
+   * Needed because neither prompt nor answer is a safe key: prompts get
+   * reworded (which would create a duplicate card and orphan its review
+   * history), and answers collide (じ and ぢ are different characters that
+   * both read "ji"). The authoring key is what lets content be edited
+   * without losing a learner's scheduling.
+   */
+  authoringKey: text('authoring_key'),
   prompt: text('prompt').notNull(),
   answer: text('answer').notNull(),
   /** JSON. Opaque to core. Never SELECT into this outside the extension. */
@@ -187,7 +197,10 @@ export const card = sqliteTable('card', {
   direction: text('direction', { enum: ['recognition', 'production'] })
     .notNull()
     .default('recognition'),
-}, (t) => [index('card_concept_idx').on(t.conceptId)])
+}, (t) => [
+  index('card_concept_idx').on(t.conceptId),
+  unique('card_authoring_key').on(t.conceptId, t.type, t.authoringKey),
+])
 
 /* ---------------- scheduling (FSRS) ---------------- */
 

@@ -15,6 +15,13 @@
       "when": 1786347803694,
       "tag": "0001_lesson_blocks",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1786351046358,
+      "tag": "0002_card_authoring_key",
+      "breakpoints": true
     }
   ]
 }

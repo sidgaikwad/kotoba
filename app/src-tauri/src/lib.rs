@@ -20,6 +20,12 @@ fn migrations() -> Vec<Migration> {
             sql: include_str!("../../drizzle/0001_lesson_blocks.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 3,
+            description: "card_authoring_key",
+            sql: include_str!("../../drizzle/0002_card_authoring_key.sql"),
+            kind: MigrationKind::Up,
+        },
     ]
 }
 
