@@ -1,0 +1,101 @@
+name: Release
+
+# Tag-driven. `git tag v0.2.0 && git push --tags` cuts a release.
+on:
+  push:
+    tags: ['v*']
+  # Manual runs are useful for testing the pipeline without minting a tag.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to build (e.g. v0.1.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  macos:
+    name: macOS universal
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Rust toolchain with both Apple targets
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin, x86_64-apple-darwin
+
+      # Rust builds dominate the wall clock; without this every release
+      # recompiles ~530 crates from scratch.
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: app/src-tauri -> target
+
+      - run: bun install --frozen-lockfile
+        working-directory: app
+
+      # Universal binary so Intel Macs are not left out. Tauri builds both
+      # architectures and lipos them together.
+      - name: Build universal .dmg
+        working-directory: app
+        run: bunx tauri build --target universal-apple-darwin --bundles dmg
+
+      - name: Locate artifact
+        id: art
+        working-directory: app
+        run: |
+          DMG=$(find src-tauri/target/universal-apple-darwin/release/bundle/dmg -name '*.dmg' | head -1)
+          test -n "$DMG" || { echo "::error::no .dmg produced"; exit 1; }
+          echo "path=app/$DMG" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename "$DMG")" >> "$GITHUB_OUTPUT"
+          ls -lh "$DMG"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          name: Kotoba ${{ github.event.inputs.tag || github.ref_name }}
+          files: ${{ steps.art.outputs.path }}
+          fail_on_unmatched_files: true
+          body: |
+            ## Install
+
+            Download the `.dmg`, open it, drag **Kotoba** to Applications.
+
+            ### ⚠️ First launch will be blocked
+
+            This build is **unsigned and not notarised**, so macOS Gatekeeper will
+            refuse it — usually with *"Kotoba is damaged and can't be opened"*.
+            That message is misleading; the file is fine, it simply has no Apple
+            signature. Clear the quarantine flag once:
+
+            ```bash
+            xattr -dr com.apple.quarantine /Applications/Kotoba.app
+            ```
+
+            Signing properly requires an Apple Developer Program membership
+            ($99/year) and a Developer ID certificate. Until then, this is the
+            honest state of distribution.
+
+            ### What's inside
+
+            The full course ships with the app — 844 lessons, 18,858 cards,
+            from あ through N1. Nothing to download or seed; it populates on
+            first launch.
+
+            Starts at hiragana. Everything else is locked until you can read.
+
+            Your progress lives at
+            `~/Library/Application Support/app.kotoba.desktop/kotoba.db`.
+            Delete that file to start over; the bundled course reinstalls itself.
+
+            ---
+
+            Universal binary — Apple Silicon and Intel.
+            Course data derived from KANJIDIC2, JMdict and KRADFILE
+            (EDRDG, CC BY-SA 4.0). No copyrighted textbook content.
