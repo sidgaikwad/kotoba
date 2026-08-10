@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  /* Calm, warm, low-contrast. This is opened every day, often tired. */
+  --color-paper: #fbf9f5;
+  --color-paper-2: #f3efe7;
+  --color-rule: #e2dbcd;
+  --color-ink: #1a1815;
+  --color-ink-2: #55504a;
+  --color-ink-3: #8a837a;
+  --color-accent: #7c4a2d;
+  --color-good: #2f6b46;
+  --color-bad: #99331f;
+  --color-flag: #b8860b;
+
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  /* Japanese first, so JA glyphs never fall back to a font built for
+     Chinese — that renders 直 骨 画 with visibly wrong shapes. */
+  --font-ja: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic Medium",
+             "Noto Sans JP", Meiryo, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-paper: #16150f;
+    --color-paper-2: #201e17;
+    --color-rule: #35322a;
+    --color-ink: #e8e3da;
+    --color-ink-2: #b0a99e;
+    --color-ink-3: #7d766c;
+    --color-accent: #d99a6c;
+    --color-good: #7cc39a;
+    --color-bad: #e2856d;
+    --color-flag: #e0b64e;
+  }
+}
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  -webkit-font-smoothing: antialiased;
+  /* The window is draggable everywhere except interactive elements. */
+  user-select: none;
+}
+
+/* Mixed JA/EN needs more leading than English alone. */
+.ja {
+  font-family: var(--font-ja);
+  line-height: 2;
+  font-feature-settings: "palt" 1;
+}
+
+button, a, input, textarea { user-select: auto; }
