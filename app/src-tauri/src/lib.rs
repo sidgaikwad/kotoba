@@ -29,6 +29,36 @@ fn migrations() -> Vec<Migration> {
     ]
 }
 
+/// Copies the bundled, pre-seeded course into place on first launch.
+///
+/// Without this a downloaded build opens to an empty Learn screen, because the
+/// course is authored by a script that lives in the repo. The bundled copy is
+/// already migrated, so the SQL plugin's migration pass sees version 3 applied
+/// and no-ops.
+///
+/// Only ever runs when no database exists. An existing file means the learner
+/// has progress, and overwriting that would be unforgivable.
+fn install_bundled_course(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
+    use tauri::Manager;
+
+    let dir = app.path().app_data_dir()?;
+    std::fs::create_dir_all(&dir)?;
+    let target = dir.join("kotoba.db");
+
+    if target.exists() {
+        return Ok(());
+    }
+
+    match app.path().resolve("resources/course.db", tauri::path::BaseDirectory::Resource) {
+        Ok(seed) if seed.exists() => {
+            std::fs::copy(&seed, &target)?;
+            log::info!("installed bundled course at {}", target.display());
+        }
+        _ => log::info!("no bundled course found; starting with an empty database"),
+    }
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -44,6 +74,10 @@ pub fn run() {
                         .level(log::LevelFilter::Info)
                         .build(),
                 )?;
+            }
+            // Must happen before the frontend calls Database.load().
+            if let Err(e) = install_bundled_course(app) {
+                log::error!("could not install bundled course: {e}");
             }
             Ok(())
         })

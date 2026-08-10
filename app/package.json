@@ -10,13 +10,14 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "desktop": "tauri dev",
-    "dmg": "tauri build --bundles dmg",
+    "dmg": "bun run pack-content && tauri build --bundles dmg",
     "db:generate": "drizzle-kit generate",
     "seed": "bun run scripts/seed.ts",
     "smoke": "bun run scripts/smoke.ts",
     "fetch-kanji": "bun run scripts/fetch-kanji.ts",
     "fetch-vocab": "bun run scripts/fetch-vocab.ts",
-    "fetch-radicals": "bun run scripts/fetch-radicals.ts"
+    "fetch-radicals": "bun run scripts/fetch-radicals.ts",
+    "pack-content": "bun run scripts/pack-content.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
