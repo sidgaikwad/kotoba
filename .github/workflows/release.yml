@@ -39,6 +39,12 @@ jobs:
       - run: bun install --frozen-lockfile
         working-directory: app
 
+      # The bundled course is a build artefact, not committed — so it has to
+      # be generated here before tauri looks for it as a resource.
+      - name: Pack the course database
+        working-directory: app
+        run: bun run pack-content
+
       # Universal binary so Intel Macs are not left out. Tauri builds both
       # architectures and lipos them together.
       - name: Build universal .dmg
