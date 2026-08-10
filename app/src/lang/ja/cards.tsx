@@ -46,6 +46,8 @@ type Extra = {
   freq?: number | null
   reading?: string
   pos?: string
+  parts?: { c: string; name: string }[]
+  words?: { w: string; r: string; g: string }[]
 }
 
 const parse = (raw: string | null): Extra => {
@@ -84,11 +86,40 @@ export function renderCard(card: Card, revealed: boolean): ReactNode {
                   <div><span className="text-ink-3">訓 </span><span className="ja">{x.kun.join('・')}</span></div>
                 )}
               </div>
+              <Parts parts={x.parts} />
+              {x.hook && <p className="text-sm text-ink-2 mt-3 max-w-md mx-auto">{x.hook}</p>}
+              <Words words={x.words} />
               {x.strokes ? (
-                <div className="text-ink-3 text-xs mt-2 font-sans">
-                  {x.strokes} strokes{x.freq ? ` · frequency rank ${x.freq}` : ''}
+                <div className="text-ink-3 text-xs mt-3 font-sans">
+                  {x.strokes} strokes{x.freq ? ` · #${x.freq} most common` : ''}
                 </div>
               ) : null}
+            </div>
+          )}
+        />
+      )
+
+    /* Components → character. The direction that proves you internalised the
+       composition rather than memorised a shape. */
+    case 'kanji-build':
+      return (
+        <Frame
+          hint="Which character is built from these parts?"
+          question={
+            <div className="text-center">
+              <div className="text-xl font-semibold leading-relaxed">{card.prompt}</div>
+              {!!x.parts?.length && (
+                <div className="ja text-3xl text-ink-3 mt-3 tracking-widest">
+                  {x.parts.map((p) => p.c).join(' ')}
+                </div>
+              )}
+            </div>
+          }
+          answer={revealed && (
+            <div className="text-center">
+              <div className="kana-hero text-matcha">{card.answer}</div>
+              {x.hook && <p className="text-sm text-ink-2 mt-3 max-w-md mx-auto">{x.hook}</p>}
+              <Words words={x.words} />
             </div>
           )}
         />
@@ -102,6 +133,7 @@ export function renderCard(card: Card, revealed: boolean): ReactNode {
           answer={revealed && (
             <div className="text-center">
               <div className="ja text-3xl text-matcha leading-relaxed">{card.answer}</div>
+              <Words words={x.words} />
               <p className="text-ink-3 text-xs mt-3 font-sans">
                 音 is the Chinese-derived reading, used in compounds. 訓 is the native reading,
                 used when the character stands alone.
@@ -367,6 +399,38 @@ function Frame({ hint, question, answer }: {
           {answer}
         </div>
       )}
+    </div>
+  )
+}
+
+/** The composition, shown as chips. This is the whole point of the track. */
+function Parts({ parts }: { parts?: { c: string; name: string }[] }) {
+  if (!parts?.length) return null
+  return (
+    <div className="flex flex-wrap justify-center gap-1.5 mt-4">
+      {parts.map((p, i) => (
+        <span key={`${p.c}-${i}`} className="inline-flex items-baseline gap-1 bg-sunk rounded-lg px-2 py-1">
+          <span className="ja text-lg">{p.c}</span>
+          <span className="text-ink-2 text-xs">{p.name}</span>
+        </span>
+      ))}
+    </div>
+  )
+}
+
+/** Real words using the character, so it is never learned in isolation. */
+function Words({ words }: { words?: { w: string; r: string; g: string }[] }) {
+  if (!words?.length) return null
+  return (
+    <div className="mt-4 pt-3 border-t border-rule text-left max-w-xs mx-auto">
+      <div className="text-[0.6rem] uppercase tracking-widest text-ink-3 font-sans mb-1">Seen in</div>
+      {words.map((v) => (
+        <div key={v.w} className="text-sm">
+          <span className="ja">{v.w}</span>
+          {v.w !== v.r && <span className="ja text-ink-3 text-xs"> {v.r}</span>}
+          <span className="text-ink-2"> — {v.g}</span>
+        </div>
+      ))}
     </div>
   )
 }
