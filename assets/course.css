@@ -1,0 +1,280 @@
+/* ============================================================
+   Shared stylesheet for all lessons and reference documents.
+   Every lesson links this. Do not inline lesson-specific CSS
+   that a second lesson could reuse — add it here instead.
+   Designed for screen reading and for printing.
+   ============================================================ */
+
+:root {
+  --ink:        #1a1815;
+  --ink-soft:   #55504a;
+  --ink-faint:  #8a837a;
+  --paper:      #fbf9f5;
+  --paper-warm: #f3efe7;
+  --rule:       #ddd6c9;
+  --accent:     #7c4a2d;   /* warm brown — headings, links */
+  --good:       #2f6b46;
+  --bad:        #99331f;
+  --flag:       #b8860b;   /* register warnings */
+  --ja-tint:    #f6f2ea;
+
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans:  ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --mono:  ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* Japanese first in the stack so JA glyphs never fall back to a CJK
+     font meant for Chinese — that renders 直/画/骨 with the wrong shapes. */
+  --ja: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic Medium",
+        "Yu Gothic", "Noto Sans JP", "Meiryo", sans-serif;
+  --ja-serif: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink:        #e8e3da;
+    --ink-soft:   #b0a99e;
+    --ink-faint:  #7d766c;
+    --paper:      #16150f;
+    --paper-warm: #201e17;
+    --rule:       #35322a;
+    --accent:     #d99a6c;
+    --good:       #7cc39a;
+    --bad:        #e2856d;
+    --flag:       #e0b64e;
+    --ja-tint:    #1e1c15;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0 auto;
+  padding: 4rem 1.5rem 8rem;
+  max-width: 43rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  /* Mixed JA/EN text needs more leading than English alone. */
+  line-height: 1.75;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- masthead ---------- */
+
+.masthead { border-bottom: 2px solid var(--ink); padding-bottom: 1rem; margin-bottom: 2.5rem; }
+.eyebrow {
+  font-family: var(--sans);
+  font-size: .7rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 .6rem;
+}
+h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 .5rem; font-weight: 600; letter-spacing: -.01em; }
+.standfirst { font-size: 1.15rem; color: var(--ink-soft); font-style: italic; margin: 0; }
+
+h2 {
+  font-size: 1.3rem;
+  margin: 3rem 0 .9rem;
+  font-weight: 600;
+  padding-bottom: .3rem;
+  border-bottom: 1px solid var(--rule);
+}
+h3 { font-size: 1.05rem; margin: 2rem 0 .5rem; font-weight: 600; }
+h4 { font-family: var(--sans); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase;
+     color: var(--ink-faint); margin: 1.5rem 0 .4rem; }
+
+p { margin: 0 0 1.1rem; }
+a { color: var(--accent); text-underline-offset: .18em; text-decoration-thickness: .5px; }
+strong { font-weight: 650; }
+
+ul, ol { padding-left: 1.3rem; margin: 0 0 1.1rem; }
+li { margin-bottom: .45rem; }
+
+/* ---------- Japanese text ---------- */
+
+.ja, ruby, [lang="ja"] {
+  font-family: var(--ja);
+  /* JA glyphs are optically smaller at the same px size than Latin. */
+  font-size: 1.08em;
+  line-height: 2;
+  font-feature-settings: "palt" 1;
+}
+.ja-lg { font-family: var(--ja); font-size: 1.5rem; line-height: 1.9; letter-spacing: .02em; }
+.ja-xl { font-family: var(--ja); font-size: 2.6rem; line-height: 1.5; }
+.ja-serif { font-family: var(--ja-serif); }
+
+ruby { ruby-position: over; }
+rt {
+  font-size: .5em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.romaji { font-family: var(--sans); font-size: .82em; color: var(--ink-faint); font-style: normal; }
+.gloss  { color: var(--ink-soft); font-style: italic; }
+
+/* A line of Japanese with its reading and meaning stacked. */
+.utterance {
+  background: var(--ja-tint);
+  border-left: 3px solid var(--rule);
+  padding: .9rem 1.1rem;
+  margin: 0 0 1rem;
+  border-radius: 0 3px 3px 0;
+}
+.utterance .ja { display: block; margin-bottom: .25rem; }
+.utterance .romaji { display: block; margin-bottom: .2rem; }
+.utterance .gloss { display: block; font-size: .95em; }
+.utterance.is-good { border-left-color: var(--good); }
+.utterance.is-bad  { border-left-color: var(--bad); }
+.utterance.is-flag { border-left-color: var(--flag); }
+
+/* ---------- callouts ---------- */
+
+.note, .warn, .source {
+  padding: .9rem 1.1rem;
+  margin: 1.5rem 0;
+  border-radius: 3px;
+  font-size: .95rem;
+}
+.note   { background: var(--paper-warm); border-left: 3px solid var(--accent); }
+.warn   { background: var(--paper-warm); border-left: 3px solid var(--flag); }
+.source { background: var(--paper-warm); border-left: 3px solid var(--ink-faint); font-family: var(--sans); font-size: .85rem; }
+.note > :last-child, .warn > :last-child, .source > :last-child { margin-bottom: 0; }
+
+.tier {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  padding: .1rem .34rem;
+  border-radius: 2px;
+  vertical-align: .12em;
+  background: var(--rule);
+  color: var(--ink-soft);
+}
+.tier.t1 { background: var(--good); color: var(--paper); }
+.tier.t2 { background: var(--flag); color: #221c08; }
+.tier.t3 { background: var(--bad);  color: var(--paper); }
+
+/* ---------- tables ---------- */
+
+table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .95rem; }
+th, td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th {
+  font-family: var(--sans); font-size: .72rem; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--ink-faint); border-bottom: 1.5px solid var(--ink-soft);
+}
+.table-scroll { overflow-x: auto; }
+
+/* ---------- quiz (driven by assets/quiz.js) ---------- */
+
+.quiz { margin: 2rem 0; }
+
+.q {
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  padding: 1.1rem 1.2rem;
+  margin-bottom: 1rem;
+  background: var(--paper-warm);
+}
+.q-num {
+  font-family: var(--sans); font-size: .68rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-faint); margin-bottom: .5rem;
+}
+.q-stem { margin-bottom: .9rem; }
+.q-stem p:last-child { margin-bottom: 0; }
+
+.opts { list-style: none; padding: 0; margin: 0; }
+.opts li { margin: 0 0 .45rem; }
+
+.opt {
+  display: block; width: 100%; text-align: left; cursor: pointer;
+  font-family: var(--serif); font-size: 1rem; line-height: 1.6;
+  padding: .6rem .8rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  color: var(--ink);
+  transition: border-color .12s, background .12s;
+}
+.opt .ja { font-size: 1.05em; line-height: 1.7; }
+.opt:hover:not(:disabled) { border-color: var(--accent); }
+.opt:disabled { cursor: default; opacity: .82; }
+.opt.picked-right { border-color: var(--good); background: color-mix(in srgb, var(--good) 12%, var(--paper)); opacity: 1; }
+.opt.picked-wrong { border-color: var(--bad);  background: color-mix(in srgb, var(--bad) 12%, var(--paper)); opacity: 1; }
+.opt.reveal-right { border-color: var(--good); opacity: 1; }
+
+.feedback {
+  margin-top: .9rem; padding-top: .8rem;
+  border-top: 1px dashed var(--rule);
+  font-size: .95rem;
+}
+.feedback[hidden] { display: none; }
+.verdict { font-family: var(--sans); font-size: .72rem; letter-spacing: .09em; text-transform: uppercase; font-weight: 700; }
+.verdict.ok  { color: var(--good); }
+.verdict.no  { color: var(--bad); }
+.feedback p:last-child { margin-bottom: 0; }
+
+/* ---------- score ---------- */
+
+.scorecard {
+  border: 2px solid var(--ink);
+  border-radius: 5px;
+  padding: 1.4rem;
+  margin: 2.5rem 0;
+  background: var(--paper-warm);
+}
+.scorecard[hidden] { display: none; }
+.score-row { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+             padding: .4rem 0; border-bottom: 1px solid var(--rule); }
+.score-row:last-of-type { border-bottom: none; }
+.score-label { font-family: var(--sans); font-size: .8rem; letter-spacing: .04em; flex: 1; }
+.score-val { font-family: var(--mono); font-size: 1rem; font-weight: 700; min-width: 2.6rem; text-align: right; }
+/* Fixed width, not flex — otherwise a full bar renders a different length
+   on each row depending on how long its label is. */
+.bar { height: 5px; background: var(--rule); border-radius: 3px; overflow: hidden; width: 9rem; flex: none; }
+.bar > span { display: block; height: 100%; background: var(--accent); }
+
+.result-code {
+  font-family: var(--mono); font-size: .82rem;
+  background: var(--paper); border: 1px dashed var(--ink-soft);
+  padding: .8rem; border-radius: 4px; margin-top: 1rem;
+  white-space: pre-wrap; word-break: break-word; user-select: all;
+}
+
+.btn {
+  font-family: var(--sans); font-size: .85rem; font-weight: 600;
+  padding: .55rem 1rem; border-radius: 4px; cursor: pointer;
+  background: var(--accent); color: var(--paper); border: none;
+}
+.btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+
+/* ---------- footer ---------- */
+
+.lesson-foot {
+  margin-top: 4rem; padding-top: 1.5rem;
+  border-top: 2px solid var(--ink);
+  font-size: .95rem;
+}
+.ask {
+  background: var(--paper-warm); border-left: 3px solid var(--accent);
+  padding: .9rem 1.1rem; border-radius: 0 3px 3px 0; margin-bottom: 1.5rem;
+}
+.nav-links { font-family: var(--sans); font-size: .85rem; color: var(--ink-faint); }
+.nav-links a { margin-right: 1.2rem; }
+
+/* ---------- print ---------- */
+
+@media print {
+  :root { --paper: #fff; --paper-warm: #f6f4ef; --ink: #000; --ja-tint: #f6f4ef; }
+  body { padding: 0; max-width: none; font-size: 10.5pt; }
+  .quiz, .btn, .nav-links { display: none; }
+  h2 { break-after: avoid; }
+  .utterance, .note, .warn, table { break-inside: avoid; }
+  a::after { content: " (" attr(href) ")"; font-size: .75em; color: #555; }
+}

@@ -1,0 +1,364 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 01 — Where you actually are</title>
+<link rel="stylesheet" href="../assets/course.css">
+
+<div class="masthead">
+  <p class="eyebrow">Lesson 01 · Diagnostic</p>
+  <h1>Where you actually are</h1>
+  <p class="standfirst">Two separate abilities, measured separately — because you are almost certainly not at the same level in both.</p>
+</div>
+
+<p>You asked me not to let you self-report. Good instinct: self-assessment in a second language is
+notoriously unreliable, and it fails in a specific direction — people who can <em>read</em> a language
+overestimate how well they can <em>produce</em> it, because recognition feels like knowledge.</p>
+
+<p>So this lesson is a test. But it is also the most efficient kind of lesson there is: every question
+gives you an answer and a reason immediately. Retrieval followed by feedback beats reading an
+explanation, even when you get the item wrong — <em>especially</em> when you get it wrong.</p>
+
+<h2>What is actually being measured</h2>
+
+<p>There are two tracks here, and they are close to independent:</p>
+
+<div class="table-scroll">
+<table>
+  <tr>
+    <th>Track</th><th>Sections</th><th>What a low score means</th>
+  </tr>
+  <tr>
+    <td><strong>Japanese as a code</strong></td>
+    <td>Kana, Vocabulary &amp; kanji, Grammar</td>
+    <td>Ordinary beginner ground. Fixable by volume. Nobody will be offended by it.</td>
+  </tr>
+  <tr>
+    <td><strong>Japanese as social behaviour</strong></td>
+    <td>Register &amp; workplace norms</td>
+    <td>The dangerous one. These errors are <em>silent</em> — colleagues will not correct you,
+        and you will not notice. This is the track your mission actually lives on.</td>
+  </tr>
+</table>
+</div>
+
+<div class="note">
+<p><strong>Expect an asymmetry.</strong> Most self-taught learners — and every textbook-taught learner
+I would expect — score far higher on the first track than the second. If that happens to you, it is not
+a failure. It is the diagnosis, and it is the reason this course is ordered the way it is.</p>
+</div>
+
+<p>Nothing here is timed. Answer from instinct rather than working it out slowly; instinct is what you
+will actually have available in a meeting. There are 21 questions and it should take under ten minutes.</p>
+
+<div id="quiz"></div>
+
+<h2>The one source to read this week</h2>
+
+<div class="source">
+<p><span class="tier t1">T1</span> <strong>敬語の指針</strong> — 文化審議会答申, 2 February 2007, 文化庁.
+<a href="https://www.bunka.go.jp/seisaku/bunkashingikai/kokugo/hokoku/pdf/keigo_tosin.pdf">PDF (Japanese)</a></p>
+<p>Do not try to read it yet. Open it, look at the table of contents, and notice one thing: the Japanese
+government found politeness confusing enough that it convened a council and published a formal ruling
+on it — and that ruling <em>overturned</em> the three-category model that every textbook still teaches.
+There are five categories, not three.</p>
+<p>That document is the backbone of the register track in this course. When a textbook and this disagree,
+this wins.</p>
+</div>
+
+<h2>What happens next</h2>
+
+<p>Paste your result line into the chat. Based on it I will place you and write Lesson 02.</p>
+
+<p>Lesson 02 is already chosen, and it is not kana and not vocabulary. It is the single structural fact
+that makes 敬語 stop being a memorisation problem: Japanese politeness runs on <strong>two independent
+axes</strong>, and English collapses them into one. Almost every register mistake an English speaker
+makes is a confusion between those two axes. Once you can see them separately, the five categories in
+the document above stop being a list to memorise and become a grid you can derive.</p>
+
+<div class="lesson-foot">
+  <div class="ask">
+    <strong>I am your teacher here, not a document.</strong> If any answer above felt arbitrary, or you
+    disagree with one, say so in the chat — disagreement is the most useful thing you can bring me.
+    Several of these have genuinely contested answers, and knowing <em>which</em> ones you push back on
+    tells me more than the score does.
+  </div>
+  <p class="nav-links">
+    <a href="../MISSION.md">Mission</a>
+    <a href="../RESOURCES.md">Resources</a>
+    <a href="../reference/glossary.html">Glossary</a>
+  </p>
+</div>
+
+<script src="../assets/quiz.js"></script>
+<script>
+Quiz.mount('#quiz', {
+  id: '0001',
+  sections: [
+    { key: 'kana',     title: 'A · Kana',                  blurb: 'The writing system. Mechanical, but it gates everything else.' },
+    { key: 'vocab',    title: 'B · Vocabulary and kanji',   blurb: 'Weighted toward words you will meet at an engineering company.' },
+    { key: 'grammar',  title: 'C · Grammar and particles',  blurb: 'Structure, not words.' },
+    { key: 'register', title: 'D · Register and workplace norms', blurb: 'The track that matters most for your mission. Guess if you need to — a guess still tells me something.' }
+  ],
+  questions: [
+
+    /* ---------------- A. Kana ---------------- */
+    {
+      section: 'kana',
+      stem: '<p>Which character reads <strong>shi</strong>?</p>',
+      options: [
+        { html: '<span class="ja-lg">さ</span>' },
+        { html: '<span class="ja-lg">し</span>', ok: true },
+        { html: '<span class="ja-lg">ち</span>' },
+        { html: '<span class="ja-lg">も</span>' }
+      ],
+      right: '<span class="ja">し</span> = shi. The near-misses were <span class="ja">さ</span> sa, <span class="ja">ち</span> chi, <span class="ja">も</span> mo.',
+      wrong: 'These four are the classic hiragana confusion cluster because they share a similar hook-and-stroke shape. If this was a guess, kana drilling goes into your daily queue from day one.'
+    },
+    {
+      section: 'kana',
+      stem: '<p>Which katakana reads <strong>so</strong>?</p>',
+      options: [
+        { html: '<span class="ja-lg">ン</span>' },
+        { html: '<span class="ja-lg">シ</span>' },
+        { html: '<span class="ja-lg">ソ</span>', ok: true },
+        { html: '<span class="ja-lg">ツ</span>' }
+      ],
+      right: '<span class="ja">ソ</span> = so, <span class="ja">ン</span> = n, <span class="ja">シ</span> = shi, <span class="ja">ツ</span> = tsu.',
+      wrong: 'This is the single most notorious set in the writing system. The distinguishing rule is stroke <em>direction</em>, not shape: <span class="ja">ソ</span> and <span class="ja">ン</span> take their long stroke downward-left from the top; <span class="ja">シ</span> and <span class="ja">ツ</span> sweep upward from the bottom-left. Handwriting makes this visible; fonts often hide it.'
+    },
+    {
+      section: 'kana',
+      stem: '<p>In <span class="ja">私は学生です</span>, how is <span class="ja">は</span> pronounced?</p>',
+      options: [
+        { html: 'ha' },
+        { html: 'wa', ok: true },
+        { html: 'ba' },
+        { html: 'pa' }
+      ],
+      right: 'Read <strong>wa</strong>. When <span class="ja">は</span> is the topic particle it is pronounced wa, though it is still written <span class="ja">は</span>.',
+      wrong: 'A spelling fossil: the kana keeps its historical form while the pronunciation moved on. Same story with the particle <span class="ja">へ</span>, read e, and the particle <span class="ja">を</span>, read o.'
+    },
+    {
+      section: 'kana',
+      stem: '<p>What does the small <span class="ja">っ</span> in <span class="ja">ちょっと</span> do?</p>',
+      options: [
+        { html: 'Doubles the following consonant', ok: true },
+        { html: 'Lengthens the preceding vowel' },
+        { html: 'Marks a rising question tone' },
+        { html: 'Softens the preceding syllable' }
+      ],
+      right: 'It doubles the next consonant: <span class="ja">ちょっと</span> = cho-t-to. It occupies a full beat of silence.',
+      wrong: 'Length in Japanese is phonemic — it changes words, it is not decoration. Getting this wrong makes <span class="ja">来て</span> kite (come) and <span class="ja">切手</span> kitte (stamp) collide.'
+    },
+
+    /* ---------------- B. Vocabulary and kanji ---------------- */
+    {
+      section: 'vocab',
+      stem: '<p><span class="ja-lg">会社</span> means:</p>',
+      options: [
+        { html: 'society' },
+        { html: 'meeting' },
+        { html: 'company', ok: true },
+        { html: 'industry' }
+      ],
+      right: '<span class="ja">会社</span> kaisha = company.',
+      wrong: 'Note the trap: <span class="ja">社会</span> shakai — the same two characters reversed — means <em>society</em>. And <span class="ja">会議</span> kaigi is a meeting. Compound order carries meaning; kanji are not a bag of concepts.'
+    },
+    {
+      section: 'vocab',
+      stem: '<p>How is <span class="ja-lg">仕事</span> read?</p>',
+      options: [
+        { html: 'shigoto', ok: true },
+        { html: 'shigyou' },
+        { html: 'jikoto' },
+        { html: 'shiji' }
+      ],
+      right: '<span class="ja">仕事</span> = shigoto, work / a job.',
+      wrong: 'This one is irregular enough to be worth flagging: <span class="ja">事</span> is read goto here through rendaku, the voicing shift that happens to the second element of many compounds — koto becomes goto.'
+    },
+    {
+      section: 'vocab',
+      stem: '<p>At a software company, <span class="ja-lg">開発</span> means:</p>',
+      options: [
+        { html: 'deployment' },
+        { html: 'development', ok: true },
+        { html: 'disclosure' },
+        { html: 'department' }
+      ],
+      right: '<span class="ja">開発</span> kaihatsu = development. <span class="ja">開発チーム</span> is the dev team.',
+      wrong: 'Worth having cold — it will be in your job title. Deployment is <span class="ja">デプロイ</span>, borrowed straight from English.'
+    },
+    {
+      section: 'vocab',
+      stem: '<p>In an IT context, <span class="ja-lg">障害</span> most often means:</p>',
+      options: [
+        { html: 'a system fault or outage', ok: true },
+        { html: 'a scheduled maintenance' },
+        { html: 'a security review board' },
+        { html: 'a release rollback plan' }
+      ],
+      right: '<span class="ja">障害</span> shougai = a fault or outage. <span class="ja">障害報告</span> is the incident report you will eventually have to write.',
+      wrong: 'Outside IT the same word means impairment or disability, which is how dictionaries usually gloss it first. Domain changes the reading of a word as much as grammar does — this is why we mine vocabulary from real engineering writing rather than from a generic frequency list.'
+    },
+
+    /* ---------------- C. Grammar and particles ---------------- */
+    {
+      section: 'grammar',
+      stem: '<p>Someone broke the build and you walk in and ask who did it. Which is natural?</p>',
+      options: [
+        { html: '<span class="ja">誰はやりましたか</span>' },
+        { html: '<span class="ja">誰をやりましたか</span>' },
+        { html: '<span class="ja">誰がやりましたか</span>', ok: true },
+        { html: '<span class="ja">誰にやりましたか</span>' }
+      ],
+      right: 'Question words take <span class="ja">が</span>, never <span class="ja">は</span>.',
+      wrong: 'This is a hard rule with a reason behind it, and the reason is the key to the whole <span class="ja">は</span>/<span class="ja">が</span> problem: <span class="ja">は</span> marks something already established between you and the listener. An unknown cannot be established. So <span class="ja">誰は</span> is a contradiction, not a style choice.'
+    },
+    {
+      section: 'grammar',
+      stem: '<p>The polite form of <span class="ja-lg">食べる</span> is:</p>',
+      options: [
+        { html: '<span class="ja">食べります</span>' },
+        { html: '<span class="ja">食べます</span>', ok: true },
+        { html: '<span class="ja">食べるます</span>' },
+        { html: '<span class="ja">食びます</span>' }
+      ],
+      right: '<span class="ja">食べる</span> → <span class="ja">食べます</span>. Drop <span class="ja">る</span>, add <span class="ja">ます</span>.',
+      wrong: 'That drop-<span class="ja">る</span> rule only works because <span class="ja">食べる</span> is a vowel-stem verb. The other class behaves differently — <span class="ja">作る</span> becomes <span class="ja">作ります</span>, not <span class="ja">作ます</span>. Which class a verb belongs to is the first branch in the conjugation machine, and we will build that machine explicitly.'
+    },
+    {
+      section: 'grammar',
+      stem: '<p>The <span class="ja">て</span>-form of <span class="ja-lg">行く</span> is:</p>',
+      options: [
+        { html: '<span class="ja">行きて</span>' },
+        { html: '<span class="ja">行いて</span>' },
+        { html: '<span class="ja">行んで</span>' },
+        { html: '<span class="ja">行って</span>', ok: true }
+      ],
+      right: '<span class="ja">行って</span> itte — irregular.',
+      wrong: 'By the regular pattern for its class it should be <span class="ja">行いて</span>, and that form is simply wrong. <span class="ja">行く</span> is the one exception in its group, and it is unavoidable because the verb is everywhere.'
+    },
+    {
+      section: 'grammar',
+      stem: '<p>Which sentence says <strong>I</strong> took the server down — my action, my responsibility?</p>',
+      options: [
+        { html: '<span class="ja">サーバーが落ちました</span>' },
+        { html: '<span class="ja">サーバーを落としました</span>', ok: true },
+        { html: '<span class="ja">サーバーが落ちています</span>' },
+        { html: '<span class="ja">サーバーが落ちそうです</span>' }
+      ],
+      right: '<span class="ja">落とす</span> is transitive — someone drops something. <span class="ja">落ちる</span> is intransitive — the thing falls on its own.',
+      wrong: 'Hold on to this one. Japanese has hundreds of these verb pairs, and choosing between them assigns blame. <span class="ja">サーバーが落ちました</span> — the server went down. <span class="ja">サーバーを落としました</span> — I took the server down. In an incident report the difference is your reputation, and Japanese lets you choose it with one verb.'
+    },
+    {
+      section: 'grammar',
+      stem: '<p><span class="ja">水を飲みたい</span> and <span class="ja">水が飲みたい</span> — which is true?</p>',
+      options: [
+        { html: 'Only the first is grammatical' },
+        { html: 'Only the second is grammatical' },
+        { html: 'Both occur; they differ slightly', ok: true },
+        { html: 'They are completely identical' }
+      ],
+      right: 'Both are used. The <span class="ja">が</span> version puts more focus on the thing wanted; the <span class="ja">を</span> version is more neutral and increasingly common.',
+      wrong: 'Included deliberately, because it is the kind of question where textbooks assert a rule and real usage does not obey it. Part of what you are learning is when a rule is a rule and when it is a preference someone wrote down.'
+    },
+
+    /* ---------------- D. Register and workplace norms ---------------- */
+    {
+      section: 'register',
+      stem: '<p>You are on a call with a client, 株式会社ケイヨウ. They ask for your department head, <span class="ja">田中部長</span>, who is out. Which do you say?</p>',
+      options: [
+        { html: '<span class="ja">田中部長はまだ戻っていません</span>' },
+        { html: '<span class="ja">田中はまだ戻っておりません</span>', ok: true },
+        { html: '<span class="ja">田中部長はまだお戻りになりません</span>' },
+        { html: '<span class="ja">田中さんはまだ戻られていません</span>' }
+      ],
+      right: 'To an outsider you drop your own boss’s title and honorifics entirely, and use humble language about him.',
+      wrong: 'This is the <span class="ja">内</span>/<span class="ja">外</span> uchi-soto flip, and it is the single most counter-intuitive thing in Japanese business language for English speakers. Inside the company 田中部長 outranks you. The moment you speak to a client, your entire company becomes <em>your side</em> — so 田中 gets no title, no <span class="ja">さん</span>, and humble verbs, exactly as you would treat yourself. Using <span class="ja">部長</span> or <span class="ja">いらっしゃる</span> about your own boss to a client sounds like you are elevating your company above the customer.'
+    },
+    {
+      section: 'register',
+      stem: '<p>Which of these is the <strong>over-polite</strong> form that careful speakers criticise?</p>',
+      options: [
+        { html: '<span class="ja">部長がおっしゃいました</span>' },
+        { html: '<span class="ja">部長が言われました</span>' },
+        { html: '<span class="ja">部長がおっしゃられました</span>', ok: true },
+        { html: '<span class="ja">部長がお話しになりました</span>' }
+      ],
+      right: '<span class="ja">おっしゃられました</span> stacks two honorifics: <span class="ja">おっしゃる</span> is already honorific, and <span class="ja">-られる</span> adds another.',
+      wrong: 'This is <span class="ja">二重敬語</span> nijuu-keigo, double honorifics. It is extremely common in the wild — you will hear it from native speakers daily — but 敬語の指針 names it explicitly as something to avoid. More politeness is not safer. Piling it on reads as either untrained or, worse, sarcastic.'
+    },
+    {
+      section: 'register',
+      stem: '<p>You propose an architecture change. The PM replies: <span class="ja">うーん、ちょっと難しいですね</span>. What has most likely just happened?</p>',
+      options: [
+        { html: 'You have been told no', ok: true },
+        { html: 'You have been asked to simplify' },
+        { html: 'You have been asked for detail' },
+        { html: 'You have been told to escalate' }
+      ],
+      right: 'That is a refusal. <span class="ja">難しい</span> here does not mean the problem is technically hard — it means the answer is no.',
+      wrong: 'A direct <span class="ja">だめです</span> would damage the relationship, so refusal is delivered as difficulty, hesitation, or a drawn-out inhale. Missing this is one of the highest-cost errors an English-speaking engineer makes in Japan: you hear a solvable technical objection, cheerfully solve it, and come back — and now you are the person who does not listen. Learning to <em>hear</em> no is as important as learning to say it.'
+    },
+    {
+      section: 'register',
+      stem: '<p>You arrive three minutes late to the <span class="ja">朝会</span>. Which is calibrated correctly?</p>',
+      options: [
+        { html: '<span class="ja">すみません、遅れました</span>', ok: true },
+        { html: '<span class="ja">申し訳ございませんでした</span>' },
+        { html: '<span class="ja">大変ご迷惑をおかけしました</span>' },
+        { html: '<span class="ja">深くお詫び申し上げます</span>' }
+      ],
+      right: 'Three minutes is a <span class="ja">すみません</span>. Anything heavier is out of proportion.',
+      wrong: 'Apology in Japanese is <em>graded</em>, and overshooting is a real error, not a safe default. Reaching for <span class="ja">深くお詫び申し上げます</span> over three minutes makes the room wonder what you actually did, and it spends credibility you will want later. Save the heavy forms for events that deserve them — and when you take production down, you will need them.'
+    },
+    {
+      section: 'register',
+      stem: '<p>Internal team Slack channel, peers and your mentor. You have finished the ticket. Which fits the channel?</p>',
+      options: [
+        { html: '<span class="ja">対応しました！</span>', ok: true },
+        { html: '<span class="ja">対応した</span>' },
+        { html: '<span class="ja">対応させていただきました</span>' },
+        { html: '<span class="ja">対応いたした次第でございます</span>' }
+      ],
+      right: 'Internal team chat sits at plain <span class="ja">です・ます</span> with light punctuation. Not casual, not keigo.',
+      wrong: 'Workplace chat is its own register and no textbook teaches it. <span class="ja">対応した</span> is too blunt for a shared channel. <span class="ja">対応させていただきました</span> is client-facing language and sounds oddly formal to your own team. The last one is theatre. The real register is <span class="ja">です・ます</span> plus a slightly warmer tone than email.'
+    },
+    {
+      section: 'register',
+      stem: '<p>An internal <span class="ja">仕様書</span> — a written technical spec — is normally written in which style?</p>',
+      options: [
+        { html: '<span class="ja">です・ます</span> polite style' },
+        { html: '<span class="ja">だ・である</span> plain style', ok: true },
+        { html: '<span class="ja">尊敬語</span> honorific style' },
+        { html: '<span class="ja">謙譲語</span> humble style' }
+      ],
+      right: 'Written documents — specs, reports, papers, news — use <span class="ja">常体</span>, the plain <span class="ja">だ・である</span> style.',
+      wrong: 'This is the fact that breaks the mental model most beginners build. Plain form is not <em>informal</em> and polite form is not <em>formal</em>. <span class="ja">です・ます</span> encodes politeness <em>toward a listener</em>; a document has no listener present, so it uses plain form — and it is more formal than the polite speech you would use to say the same thing aloud. Two different dimensions, which is exactly what Lesson 02 is about.'
+    },
+    {
+      section: 'register',
+      stem: '<p><span class="ja">田中部長は会議に行かれました</span>. The honorific here shows respect toward whom?</p>',
+      options: [
+        { html: 'The person spoken about', ok: true },
+        { html: 'The person spoken to' },
+        { html: 'Both, simultaneously' },
+        { html: 'Neither, it is passive' }
+      ],
+      right: 'The honorific elevates 田中部長 — the person being <em>discussed</em> — regardless of who is listening.',
+      wrong: 'This is the distinction the entire register system is built on, and English has no equivalent, so English speakers reliably miss it. <span class="ja">行かれました</span> raises the <em>subject</em>. The <span class="ja">ました</span> on the end is a separate mechanism that is polite toward your <em>listener</em>. Two dials, moving independently, in one verb. Lesson 02.'
+    },
+    {
+      section: 'register',
+      stem: '<p>A colleague from another team stays late and fixes your broken CI. Besides <span class="ja">ありがとうございます</span>, which is also completely natural — and startles English speakers?</p>',
+      options: [
+        { html: '<span class="ja">おめでとうございます</span>' },
+        { html: '<span class="ja">すみません</span>', ok: true },
+        { html: '<span class="ja">よろしくどうぞ</span>' },
+        { html: '<span class="ja">おかげさまです</span>' }
+      ],
+      right: '<span class="ja">すみません</span> works as thanks. It acknowledges the trouble the other person went to on your behalf.',
+      wrong: 'English separates apology from gratitude cleanly. Japanese does not: <span class="ja">すみません</span> covers both because both are ways of registering that someone else absorbed a cost for you. This is not politeness theatre — it is a genuinely different way of accounting for social debt, and noticing it is the beginning of hearing the language the way it is meant.'
+    }
+  ]
+});
+</script>
